@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Distributed Agents &mdash; fjåge 1.1 documentation</title>
+    <title>Distributed Agents &mdash; fjåge 1.1.1 documentation</title>
     
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '1.1',
+        VERSION:     '1.1.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="fjåge 1.1 documentation" href="index.html" />
+    <link rel="top" title="fjåge 1.1.1 documentation" href="index.html" />
     <link rel="next" title="The Shell Agent" href="shell.html" />
     <link rel="prev" title="Directory Services" href="services.html" /> 
   </head>
@@ -39,7 +39,7 @@
         <li class="right" >
           <a href="services.html" title="Directory Services"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">fjåge 1.1 documentation</a> &raquo;</li> 
+        <li><a href="index.html">fjåge 1.1.1 documentation</a> &raquo;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar">
@@ -118,7 +118,7 @@
 <div class="highlight-sh"><div class="highlight"><pre><span class="c">#!/bin/sh</span>
 
 <span class="nv">CLASSPATH</span><span class="o">=</span><span class="sb">`</span>find build/libs -name *.jar -exec /bin/echo -n :<span class="s1">&#39;{}&#39;</span> <span class="se">\;</span><span class="sb">`</span>
-java -cp <span class="s2">&quot;$CLASSPATH&quot;</span> -Djava.util.logging.config.file<span class="o">=</span>etc/logging.properties org.arl.fjage.shell.GroovyBoot -Durl<span class="o">=</span><span class="s2">&quot;$1&quot;</span> etc/initrc-rconsole.groovy
+java -cp <span class="s2">&quot;$CLASSPATH&quot;</span> org.arl.fjage.shell.GroovyBoot -Durl<span class="o">=</span><span class="s2">&quot;$1&quot;</span> etc/initrc-rconsole.groovy
 </pre></div>
 </div>
 <p>and <cite>etc/initrc-rconsole.groovy</cite>:</p>
@@ -172,7 +172,7 @@ java -cp <span class="s2">&quot;$CLASSPATH&quot;</span> -Djava.util.logging.conf
         <li class="right" >
           <a href="services.html" title="Directory Services"
              >previous</a> |</li>
-        <li><a href="index.html">fjåge 1.1 documentation</a> &raquo;</li> 
+        <li><a href="index.html">fjåge 1.1.1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">

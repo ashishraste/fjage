@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Getting Started &mdash; fjåge 1.1 documentation</title>
+    <title>Getting Started &mdash; fjåge 1.1.1 documentation</title>
     
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '1.1',
+        VERSION:     '1.1.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="fjåge 1.1 documentation" href="index.html" />
+    <link rel="top" title="fjåge 1.1.1 documentation" href="index.html" />
     <link rel="next" title="Agents and Behaviors" href="behaviors.html" />
     <link rel="prev" title="Introduction" href="introduction.html" /> 
   </head>
@@ -39,7 +39,7 @@
         <li class="right" >
           <a href="introduction.html" title="Introduction"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">fjåge 1.1 documentation</a> &raquo;</li> 
+        <li><a href="index.html">fjåge 1.1.1 documentation</a> &raquo;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar">
@@ -109,17 +109,16 @@
 fjage.sh
 logs/
 build/libs/
-  fjage-1.1.jar
+  fjage-1.1.1.jar
   groovy-all-2.1.2.jar
   commons-lang3-3.1.jar
   jline-2.10.jar
 etc/
   initrc.groovy
-  logging.properties
 </pre>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">The <cite>build/libs</cite> folder contains all the necessary libraries. The <cite>etc</cite> folder contains startup files. <cite>initrc.groovy</cite> in the initialization script where you create your agents and configure them. <cite>logging.properties</cite> is a standard <a class="reference external" href="http://docs.oracle.com/javase/7/docs/technotes/guides/logging/overview.html">Java logging</a> configuration file that controls the logs from your project. <cite>fjage.sh</cite> is your startup shell script that simply sets up the classpath and boots up fjåge with the <cite>initrc.groovy</cite> script. The organization of the directory structure and names of the files are all customizable by editing <cite>fjage.sh</cite> and <cite>initrc.groovy</cite>.</p>
+<p class="last">The <cite>build/libs</cite> folder contains all the necessary libraries. The <cite>etc</cite> folder contains startup files. <cite>initrc.groovy</cite> in the initialization script where you create your agents and configure them. <cite>fjage.sh</cite> is your startup shell script that simply sets up the classpath and boots up fjåge with the <cite>initrc.groovy</cite> script. The organization of the directory structure and names of the files are all customizable by editing <cite>fjage.sh</cite> and <cite>initrc.groovy</cite>.</p>
 </div>
 <p>To check that your fjåge installation is correctly working, type <cite>./fjage.sh</cite>. That should simply give you an interactive fjåge Groovy shell with a <cite>$</cite> prompt. Type <cite>ps</cite> to see a list of running agents. There should be only one <cite>shell</cite> agent created by the default <cite>initrc.groovy</cite> script. Type <cite>shutdown</cite> or press control-D to terminate fjåge.</p>
 <div class="highlight-console"><div class="highlight"><pre><span class="go">bash$ ./fjage.sh</span>
@@ -162,7 +161,7 @@ etc/
 <span class="go">bash$</span>
 </pre></div>
 </div>
-<p>The default fjåge log file format is pipe-separated, where the first column is the timestamp in milliseconds, the second column is the log level, the third column is the agent class name and threadID, and the last column is the log message. You may change the format if you like by editing the <cite>logging.properties</cite> file in the <cite>etc</cite> folder.</p>
+<p>The default fjåge log file format is pipe-separated, where the first column is the timestamp in milliseconds, the second column is the log level, the third column is the agent class name and threadID, and the last column is the log message. You may change the format if you like by loading a custom logging configuration by specifying a <cite>java.util.logging.config.file</cite> system property while starting the JVM (see <a class="reference external" href="http://docs.oracle.com/javase/7/docs/technotes/guides/logging/overview.html">Java logging</a>).</p>
 <p>Congratulations!!! You have just developed your first Groovy fjåge agent!</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -230,10 +229,10 @@ etc/
 <div class="section" id="typical-bootup-for-groovy-applications">
 <h2>Typical bootup for Groovy applications<a class="headerlink" href="#typical-bootup-for-groovy-applications" title="Permalink to this headline">¶</a></h2>
 <p>In order to fully understand how fjåge works, it is useful to look at the bootup sequence of our hello world fjåge application. When we run <cite>fjage.sh</cite>, the shell script creates a CLASSPATH to include all jar files in the <cite>build/libs</cite> folder and then starts the JVM:</p>
-<div class="highlight-sh"><div class="highlight"><pre>java -cp <span class="s2">&quot;$CLASSPATH&quot;</span> -Djava.util.logging.config.file<span class="o">=</span>etc/logging.properties org.arl.fjage.shell.GroovyBoot etc/initrc.groovy
+<div class="highlight-sh"><div class="highlight"><pre>java -cp <span class="s2">&quot;$CLASSPATH&quot;</span> org.arl.fjage.shell.GroovyBoot etc/initrc.groovy
 </pre></div>
 </div>
-<p>This command uses the <cite>etc/logging.properties</cite> to set up Java logging and invokes the <cite>main()</cite> static method on the <cite>org.arl.fjage.shell.GroovyBoot</cite> class. The initialization script <cite>etc/initrc.groovy</cite> is passed as a command line argument to the <cite>main()</cite>.</p>
+<p>This command invokes the <cite>main()</cite> static method on the <cite>org.arl.fjage.shell.GroovyBoot</cite> class. The initialization script <cite>etc/initrc.groovy</cite> is passed as a command line argument to the <cite>main()</cite>.</p>
 <p>Let us next take a look at a simplified code extract from the <cite>org.arl.fjage.shell.GroovyBoot.main()</cite> method:</p>
 <div class="highlight-java"><div class="highlight"><pre><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
   <span class="n">engine</span> <span class="o">=</span> <span class="k">new</span> <span class="n">GroovyScriptEngine</span><span class="o">();</span>
@@ -244,6 +243,10 @@ etc/
   <span class="n">engine</span><span class="o">.</span><span class="na">shutdown</span><span class="o">();</span>
 <span class="o">}</span>
 </pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><cite>GroovyBoot</cite> also supports resource URLs of the form <cite>res://path/to/package/script.groovy</cite> to execute initialization Groovy scripts loaded from Java resources (potentially inside jar files).</p>
 </div>
 <p>This code sequentially executes every initialization Groovy script given on the command line. In our case, this causes the <cite>etc/initrc.groovy</cite> to be executed:</p>
 <div class="highlight-groovy"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">org.arl.fjage.*</span>
@@ -296,7 +299,7 @@ etc/
         <li class="right" >
           <a href="introduction.html" title="Introduction"
              >previous</a> |</li>
-        <li><a href="index.html">fjåge 1.1 documentation</a> &raquo;</li> 
+        <li><a href="index.html">fjåge 1.1.1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
