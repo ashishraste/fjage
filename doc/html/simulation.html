@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Discrete Event Simulation &mdash; fjåge 1.1.1 documentation</title>
+    <title>Simulation &mdash; fjåge 1.1.2 documentation</title>
     
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '1.1.1',
+        VERSION:     '1.1.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="fjåge 1.1.1 documentation" href="index.html" />
+    <link rel="top" title="fjåge 1.1.2 documentation" href="index.html" />
     <link rel="next" title="Groovy vs Java Agents" href="java.html" />
     <link rel="prev" title="The Shell Agent" href="shell.html" /> 
   </head>
@@ -39,11 +39,20 @@
         <li class="right" >
           <a href="shell.html" title="The Shell Agent"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">fjåge 1.1.1 documentation</a> &raquo;</li> 
+        <li><a href="index.html">fjåge 1.1.2 documentation</a> &raquo;</li> 
       </ul>
     </div>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Simulation</a><ul>
+<li><a class="reference internal" href="#discrete-event-simulation">Discrete Event Simulation</a></li>
+<li><a class="reference internal" href="#random-number-generation">Random Number Generation</a></li>
+</ul>
+</li>
+</ul>
+
   <h4>Previous topic</h4>
   <p class="topless"><a href="shell.html"
                         title="previous chapter">The Shell Agent</a></p>
@@ -71,8 +80,10 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="discrete-event-simulation">
-<h1>Discrete Event Simulation<a class="headerlink" href="#discrete-event-simulation" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="simulation">
+<h1>Simulation<a class="headerlink" href="#simulation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="discrete-event-simulation">
+<h2>Discrete Event Simulation<a class="headerlink" href="#discrete-event-simulation" title="Permalink to this headline">¶</a></h2>
 <p>When used in the <a class="reference external" href="http://en.wikipedia.org/wiki/Discrete_event_simulation">Discrete event simulation</a> mode, fjåge allows agents to be tested rapidly through the notion of <em>virtual time</em>. The passage of virtual time is simulated such that computation and processing does not take any virtual time, while scheduling requests are met accurately in virtual time. The virtual time advances in discrete steps such that the time when no agent is active is effectively skipped. This potentially allows for simulation of hours of virtual time within seconds.</p>
 <p>In order to use the discrete event simulation mode, a few conditions have to be met. The first two of these conditions are related to timing functions and were introduced in the &#8220;<a class="reference internal" href="introduction.html#intro"><em>Introduction</em></a>&#8221; chapter. The last condition is related to agents deployed in slave containers.</p>
 <ol class="arabic simple">
@@ -83,7 +94,6 @@
 <p>To run the agents in the discrete event simulation mode, the use of the <cite>RealTimePlatform</cite> in <cite>etc/initrc.groovy</cite> is replaced by <cite>DiscreteEventSimulator</cite>:</p>
 <div class="highlight-groovy"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">org.arl.fjage.*</span>
 
-<span class="n">GroovyAgentExtensions</span><span class="o">.</span><span class="na">enable</span><span class="o">()</span>
 <span class="n">platform</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DiscreteEventSimulator</span><span class="o">()</span>
 <span class="n">container</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Container</span><span class="o">(</span><span class="n">platform</span><span class="o">)</span>
 <span class="c1">// add agents to the container here</span>
@@ -94,6 +104,22 @@
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">It is recommended that you do not run interactive agents such as <cite>ShellAgent</cite> in this mode, as the interaction with the real world is not compatible with virtual time.</p>
+</div>
+</div>
+<div class="section" id="random-number-generation">
+<h2>Random Number Generation<a class="headerlink" href="#random-number-generation" title="Permalink to this headline">¶</a></h2>
+<p>Repeatable generation of random numbers is a common requirement in discrete event simulation. To ensure repeatability, it is important to guarantee deterministic ordering of calls to random number generators used in different threads, or to use individual random number generators for each thread. In the later case, one has to manage the seeds of all random number generators used in the simulation.</p>
+<p>To help with this task, fjåge provides support for inbuilt random number generation using the <a class="reference external" href="http://org-arl.github.com/fjage/javadoc/index.html?org/arl/fjage/RandomNumberGenerator.html">RandomNumberGenerator</a> class. This class maintains a set of random number generators for each thread. Once the root random number generator seed is initialized, the thread-bound random number generator seeds are derived from it. One has to ensure deterministic ordering of first call from each thread to the random number generator. For this, it is recommended that each agent requiring the services of the random number generator initialize it by simply generating one random number in the constructor:</p>
+<div class="highlight-groovy"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">org.arl.fjage.*</span>
+
+<span class="kd">class</span> <span class="nc">MyAgent</span> <span class="o">{</span>
+  <span class="n">MyAgent</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">RandomNumberGenerator</span><span class="o">.</span><span class="na">nextDouble</span><span class="o">()</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>Subsequent calls to the static methods of the <cite>RandomNumberGenerator</cite> use the thread-bound random number generator automatically.</p>
 </div>
 </div>
 
@@ -112,7 +138,7 @@
         <li class="right" >
           <a href="shell.html" title="The Shell Agent"
              >previous</a> |</li>
-        <li><a href="index.html">fjåge 1.1.1 documentation</a> &raquo;</li> 
+        <li><a href="index.html">fjåge 1.1.2 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
